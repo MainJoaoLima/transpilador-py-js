@@ -1,49 +1,45 @@
 class CodeGenerator:
     def __init__(self, ast):
-        self.ast = ast 
+        self.ast = ast
 
     def generate(self):
-        js_code = []
-        for node in self.ast:
-            if node["type"] == "function":
-                parameters = ", ".join(node["parameters"])
-                body = self.generate_block(node["body"], indent="    ")
-                js_code.append(f"function {node['name']}({parameters}) {{\n{body}\n}}")
-            elif node["type"] == "assignment":
-                value = self.generate_expression(node["value"])
-                js_code.append(f"let {node['name']} = {value};")
-            elif node["type"] == "for":
-                iterable = self.generate_expression(node["iterable"])
-                body = self.generate_block(node["body"], indent="    ")
-                js_code.append(f"for (let {node['iterator']} of {iterable}) {{\n{body}\n}}")
-        return "\n".join(js_code)
+        return "\n".join(self._generate_node(node) for node in self.ast)
 
+    def _generate_node(self, node, indent=""):
+        node_type = node["type"]
+        if node_type == "function":
+            parameters = ", ".join(node["parameters"])
+            body = self._generate_block(node["body"], indent + "    ")
+            return f"{indent}function {node['name']}({parameters}) {{\n{body}\n{indent}}}"
+        elif node_type == "for":
+            iterable = self._generate_expression(node["iterable"])
+            body = self._generate_block(node["body"], indent + "    ")
+            return f"{indent}for (let {node['iterator']} of {iterable}) {{\n{body}\n{indent}}}"
+        elif node_type == "if":
+            condition = self._generate_expression(node["condition"])
+            if_body = self._generate_block(node["if_body"], indent + "    ")
+            else_body = ""
+            if node.get("else_body"):
+                else_body = f"{indent}else {{\n{self._generate_block(node['else_body'], indent + '    ')}\n{indent}}}"
+            return f"{indent}if ({condition}) {{\n{if_body}\n{indent}}}{else_body}"
+        elif node_type == "return":
+            value = self._generate_expression(node["value"])
+            return f"{indent}return {value};"
+        elif node_type in {"assignment", "compound_assignment"}:
+            value = self._generate_expression(node["value"])
+            operator = node.get("operator", "=")
+            return f"{indent}{node['name']} {operator} {value};"
+        elif node_type == "call":
+            args = ", ".join(self._generate_expression(arg) for arg in node["arguments"])
+            return f"{indent}{node['name']}({args});"
+        return ""
 
-    def generate_block(self, body, indent=""):
-        js_body = []
-        for statement in body:
-            if statement["type"] == "assignment":
-                value = self.generate_expression(statement["value"])
-                js_body.append(f"{indent}{statement['name']} = {value};")
-            elif statement["type"] == "compound_assignment":
-                value = self.generate_expression(statement["value"])
-                js_body.append(f"{indent}{statement['name']} {statement['operator']} {value};")
-            elif statement["type"] == "if":
-                condition = self.generate_expression(statement["condition"])
-                if_body = self.generate_block(statement["if_body"], indent + "    ")
-                js_body.append(f"{indent}if ({condition}) {{\n{if_body}\n{indent}}}")
-                if statement.get("else_body"):
-                    else_body = self.generate_block(statement["else_body"], indent + "    ")
-                    js_body.append(f"{indent}else {{\n{else_body}\n{indent}}}")
-            elif statement["type"] == "for":
-                iterable = self.generate_expression(statement["iterable"])
-                for_body = self.generate_block(statement["body"], indent + "    ")
-                js_body.append(f"{indent}for (let {statement['iterator']} of {iterable}) {{\n{for_body}\n{indent}}}")
-        return "\n".join(js_body)
+    def _generate_block(self, body, indent=""):
+        return "\n".join(self._generate_node(statement, indent) for statement in body)
 
 
 
-    def generate_expression(self, expr):
+    def _generate_expression(self, expr):
         if expr is None:
             return "null"
         if isinstance(expr, dict):
@@ -52,16 +48,15 @@ class CodeGenerator:
             elif expr["type"] == "variable":
                 return expr["value"]
             elif expr["type"] == "binary_operation":
-                left = self.generate_expression(expr["left"])
-                right = self.generate_expression(expr["right"])
-                operator = expr["operator"]
-                if operator == "and":
-                    operator = "&&"
-                elif operator == "or":
-                    operator = "||"
+                left = self._generate_expression(expr["left"])
+                right = self._generate_expression(expr["right"])
+                operator = {"and": "&&", "or": "||"}.get(expr["operator"], expr["operator"])
                 return f"{left} {operator} {right}"
-
+            elif expr["type"] == "call":
+                args = ", ".join(self._generate_expression(arg) for arg in expr["arguments"])
+                return f"{expr['name']}({args})"
             elif expr["type"] == "list":
-                elements = ", ".join(self.generate_expression(el) for el in expr["elements"])
+                elements = ", ".join(self._generate_expression(el) for el in expr["elements"])
                 return f"[{elements}]"
+
         return str(expr)
