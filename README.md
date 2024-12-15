@@ -2,7 +2,7 @@
 
 ## Introducao
 
-O nosso projeto prototipo implementa um transpilador que converte códigos de Python para JavaScript. Como finalidade de possibilitar o reaproveitamento de um código em Python em aplicações voltadas para outras plataformas que necessitem de JavaScript, ajudando na portabilidade e integração.
+O nosso projeto protótipo implementa um transpilador que converte códigos de Python para JavaScript. Com finalidade de possibilitar o reaproveitamento de um código em Python em aplicações voltadas para outras plataformas que necessitem de JavaScript, ajudando na portabilidade e integração.
 
 ---
 
@@ -15,7 +15,7 @@ O nosso projeto prototipo implementa um transpilador que converte códigos de Py
 
 ## Justificativa
 
-A conversão de Python para JavaScript faz se importante pois possibilita a portabilidade, em muitas aplicações web dependem exclusivamente de JavaScript no frontend. Sendo assim, pessoas que tem mais afinidade com Python poder reaproveitar os códigos e facilitar a transição entre backend e frontend.
+A conversão de Python para JavaScript faz se importante pois possibilita a portabilidade, porque muitas aplicações web dependem exclusivamente de JavaScript no frontend. Sendo assim, pessoas que têm mais afinidade com Python podem reaproveitar os códigos e facilitar a transição entre backend e frontend.
 
 ---
 
@@ -35,7 +35,7 @@ A conversão de Python para JavaScript faz se importante pois possibilita a port
 
 ### Operadores
 
-- **Aritméticos:** `+`, `-`, `*`, `/`, `%`
+- **Aritméticos:** `+`, `-`, `*`, `/`
 - **Lógicos:** `and`, `or`
 
 ---
@@ -68,10 +68,7 @@ bloco ::= comando+
 #### Comandos
 
 ```
-comando ::= atribuicao
-         | condicional
-         | repeticao
-         | chamada_funcao
+comando ::= atribuicao | condicional | repeticao | chamada_funcao
 ```
 
 #### Condicional
@@ -126,36 +123,48 @@ argumentos ::= expressao (',' expressao)*
     ```python
     x = 4
     y = 1
-    if x == 5 or y == 1:
-        y = 3
+    if (x == 5 or y == 1):
+      y = 3
     else:
-        y = 4
+      y = 4
+
     ```
    - JavaScript:
     ```javascript
     let x = 4;
     let y = 1;
-    if (x) {
-        let y = 3;
-    } else {
-        let y = 4;
+    if (x == 5 || y == 1) {
+      y = 3;
     }
+    else {
+      y = 4;
+    }
+
     ```
 
 4. **Repetição (for):**
 
    - Python:
     ```python
-    a = 2
-    i = 1
-    for i in range(5):
-        i = i + 1
+    x = 2
+    g = [1, 2, 3, 4]
+    y = 2
+
+   for n in g:
+     y += 1
+
     ```
    - JavaScript:
     ```javascript
-    for (let i = 0; i < 5; i += 1) {
-        i = (i + 1);
+    let x = 2;
+    let g = [1, 2, 3, 4];
+    let y = 2;
+
+
+    for (let n of g) {
+      y += 1;
     }
+
     ```
 
 5. **Funções:**
@@ -176,14 +185,15 @@ argumentos ::= expressao (',' expressao)*
 
 ## Instruções de Execução
 
-
-1. Execute o transpilador:
+1. Adicione o codigo em Python desejado em `entrada.py`
+   
+2. Execute o transpilador:
 
    ```bash
    python3 main.py entrada.py saida.js
    ```
 
-2. Verifique o arquivo `saida.js` para o código traduzido.
+3. Verifique o arquivo `saida.js` para o código traduzido.
 
 ---
 
