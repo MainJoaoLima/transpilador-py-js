@@ -1,12 +1,13 @@
+x = 2
 
-x = 5
-x += 2
-
-if x > 3:
-    y = 10
-else:
-    y = 0
-
+def test ():
+    y = 2
+    if x > 3 or y == 3:
+        y += 1
+    
+    else :
+        y = (3 * x) + 4
+    
 
 
 
