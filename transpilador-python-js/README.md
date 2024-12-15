@@ -23,8 +23,8 @@ A conversão de Python para JavaScript faz se importante pois possibilita a port
 
 ### Literais de Dados
 
-- **Números inteiros:** 
-- **Strings:**
+- **Números inteiros** 
+- **Strings**
 
 ### Palavras Reservadas
 
