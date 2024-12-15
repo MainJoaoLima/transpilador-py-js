@@ -1,11 +1,13 @@
-x = 2
-y = 2
+x = 3
+y = 1
+g = [1,2,3]
 
-def main():
-    x = 2
-    y = 2
-
-    if x > 3 or y == 3:
+def test ():
+    for y in g:
         y += 1
+
+    if x > 3 or y > 3:
+        return 5
+        
     else:
-        y = (3 * x) + 4 
+        return 1
