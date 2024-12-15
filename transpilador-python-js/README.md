@@ -29,7 +29,7 @@ A conversão de Python para JavaScript faz se importante pois possibilita a port
 ### Palavras Reservadas
 
 - **Declaração:** `let`, `var`, `const` 
-- **Controle de fluxo:** `if`, `else`, `for`, `while`, `break`, `continue`, `pass` (convertido para lógica correspondente em JS).
+- **Controle de fluxo:** `if`, `else`, `for`)
 - **Funções:** `def`, `return`
 - **Lógica:** `and`, `or`
 
@@ -171,12 +171,6 @@ argumentos ::= expressao (',' expressao)*
          return a + b;
      }
      ```
-
----
-
-## Estrutura do Projeto
-
-
 
 ---
 
