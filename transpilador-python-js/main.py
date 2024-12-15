@@ -12,12 +12,13 @@ def main(input_file, output_file):
 
     parser = Parser(tokens)
     ast = parser.parse()
-    
+    #print("AST Gerado:", ast)  
 
     generator = CodeGenerator(ast)
     js_code = generator.generate()
+    #print("Código JS Gerado:\n",js_code)  
 
-    #print(ast)  # árvore AST para identificar problemas
+
     with open(output_file, 'w') as f:
         f.write(js_code)
 
