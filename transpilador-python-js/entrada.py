@@ -6,8 +6,8 @@ def test ():
     for y in g:
         y += 1
 
-    if x > 3 or y > 3:
-        return 5
-        
-    else:
-        return 1
+        if x > 3 or y > 3:
+            return 5
+            
+        else:
+            return 1
