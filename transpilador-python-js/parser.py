@@ -15,20 +15,22 @@ class Parser:
 
     def statement(self):
         token = self.tokens[self.current_position]
-        if token[0] == "ID" and self.tokens[self.current_position + 1][0] == "LPAREN":
-            return self.function_call()
-        elif token[0] == "ID":
-            return self.assignment()
-        elif token[0] == "DEF":
-            return self.function_definition()
-        elif token[0] == "IF":
-            return self.conditional()
-        elif token[0] == "FOR":
-            return self.loop()
+
+        
+        if token[0] == "DEF":
+            return self.function_definition() 
         elif token[0] == "RETURN":
             self.consume("RETURN")
             value = self.expression()
             return {"type": "return", "value": value}
+        elif token[0] == "FOR":
+            return self.loop()
+        elif token[0] == "ID" and self.tokens[self.current_position + 1][0] == "LPAREN":
+            return self.function_call()
+        elif token[0] == "IF":
+            return self.conditional()
+        elif token[0] == "ID":
+            return self.assignment()
         else:
             raise SyntaxError(f"Unexpected token: {token}")
 
